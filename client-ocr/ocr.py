@@ -3,28 +3,23 @@ from functools import partial
 import time
 import pyautogui
 import requests
-#import pygetwindow
+import pygetwindow as gw
 import pytesseract
 import numpy as np
 import cv2
 
 username = "Thomas"
-monitor = 2
-
 
 base_url = "http://gubendo.pythonanywhere.com/upload_height/"
 
-'''ImageGrab.grab = partial(ImageGrab.grab, all_screens=True)
-screen = pyautogui.screenshot()
-screen.save("test.png")
-img_cv = np.array(screen)'''
-
+print('LANCEZ BETON BRUTAL VITE VITE VITE')
+time.sleep(20)
 
 while True:
     time.sleep(10)
-    filename = "/home/pele/Téléchargements/image.png" # TODO replace these lines by windows screenshot
-    img = cv2.imread(filename)
-
+    
+    screen = pyautogui.screenshot()
+    img = np.array(screen)
 
     h, w, _channel = img.shape
 
@@ -35,6 +30,8 @@ while True:
     text = pytesseract.image_to_string(img_bin)
 
     height = text.split('M')[0]
+    print(height)
+    
     try:
         height_int = int(height)
     except:
@@ -44,3 +41,4 @@ while True:
         print(data)
         response = requests.post(base_url, json=data)
         print(response)
+    
