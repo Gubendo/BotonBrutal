@@ -1,7 +1,10 @@
-### API OBJ
+### BOTON BRUTAL
 
-Simple flask api taking 4 images as inputs and returning a generated .obj
+Ce projet est séparé en 3 parties :  
+
+- Un script python lancé côté client qui vient capturer la fenêtre Beton Brutal à intervalle régulier, crop la zone affichant la hauteur, passer un OCR sur la hauteur affichée et enregistrer la hauteur actuelle   
+- Une API Flask hébergée en ligne qui stocke la hauteur de tous les participants. Une route permet d'obtenir la hauteur max et actuelle de tous les participants, et une autre permet de mettre à jour la hauteur d'un utilisateur. À chaque mise à jour de la hauteur client, l'API vient déterminer si la hauteur est un nouveau record ou alors une chute.     
+- Un bot discord qui permet aux membres du serveur de taper l'API sans avoir à faire de requêtes (pour récuperer la hauteur d'une ou plusieurs personnes) et qui envoie une notification à tout le monde en cas de chute importante.   
 
 
-CURL REQUEST : curl -X POST -F photo=@/home/pele/00.png -F photo=@/home/pele/01.png -F photo=@/home/pele/02.png -F photo=@/home/pele/03.png 51.159.184.248:5000/modelize/ -o model.obj
-UI REQUEST : https://51.159.184.248:5000
+
