@@ -1,0 +1,3 @@
+opencv-python
+discord.py
+requests
