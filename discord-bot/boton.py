@@ -17,12 +17,12 @@ class BetonBot(discord.Client):
     
     async def on_ready(self):
        print("BOT READY")
-       self.channel = self.get_channel(1100334635382227004)
+       self.channel = self.get_channel(1100461581072085012)
        self.update_data.start()
 
     @tasks.loop(seconds = 10)
     async def update_data(self):
-       channel = self.get_channel(1100334635382227004)
+       channel = self.get_channel(1100461581072085012)
        response = requests.get("http://gubendo.pythonanywhere.com/get_height/")
        data = response.json()
        df = pd.read_csv("data.csv")
@@ -39,7 +39,7 @@ class BetonBot(discord.Client):
                    user_index = index
 
           df.loc[user_index, "current_height"] = height
-          if new_max > max_height:
+          if new_max > max_height + 10:
              df.loc[user_index, "max_height"] = new_max
              df.to_csv("data.csv", index=False)
              await channel.send("_ _ \n🚨 Nouveau record pour " + user + " 🚨 : " + str(new_max) + " mètres\n _ _")
@@ -54,7 +54,7 @@ class BetonBot(discord.Client):
           df.to_csv("data.csv", index=False)
 
     async def display_performance(self, performance):
-       channel = self.get_channel(1100334635382227004)
+       channel = self.get_channel(1100461581072085012)
        response = requests.get("http://gubendo.pythonanywhere.com/get_height/")
        data = response.json()
        info = "\n"
@@ -108,27 +108,5 @@ bb = BetonBot()
 bb.run("MTEwMDMzMjkyMTY4NjA3NzQ1MA.Gjl5oy.TmhI1vlC4QbPysH-BGC_SFSNPjwNNE8ZKmf1q4")
 
 
-"""response = requests.get("http://localhost:5000/get_height/")
-data = response.json()
-info = "\n"
-heights = {}
-performance = 2 #1 pour hauteur actuelle, #2 pour hauteur max
-for i in range(len(data)):
-   heights[i] = data[i][performance] 
-
-heights_sorted = dict(sorted(heights.items(), key=lambda item: item[1], reverse=True))
-counter = 0
-last_height = 0
-for key in heights_sorted:
-   player = data[key]
-   if counter != 0:
-      splits = int((last_height - player[performance]) / 20)
-      info += "-\n"*splits
-   info += player[0] + " : " + str(player[1]) + "m (Max : " + str(player[2]) + "m)\n"
-   counter +=1 
-   last_height = player[performance]
-   
-
-print(info)"""
 
 

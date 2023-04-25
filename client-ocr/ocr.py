@@ -25,7 +25,7 @@ while True:
 
     img_crop = img[0:int(h/8), 0:int(w/8)]
     img_crop = cv2.cvtColor(img_crop, cv2.COLOR_BGR2GRAY)
-    _, img_bin = cv2.threshold(img_crop, 60, 255, cv2.THRESH_BINARY_INV)
+    _, img_bin = cv2.threshold(img_crop, 120, 255, cv2.THRESH_BINARY)
 
     text = pytesseract.image_to_string(img_bin)
 
