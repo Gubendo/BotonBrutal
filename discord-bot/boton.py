@@ -5,10 +5,12 @@ import cv2
 import io
 import datetime
 import requests
+import argparse
 
 class BetonBot(discord.Client):
-    def __init__(self):
+    def __init__(self, channel):
       self.last_post = datetime.datetime(2012, 3, 5, 23, 8, 15)
+      self.channel = channel 
 
       intents = discord.Intents.all()
       intents.message_content = True
@@ -17,12 +19,11 @@ class BetonBot(discord.Client):
     
     async def on_ready(self):
        print("BOT READY")
-       self.channel = self.get_channel(1100461581072085012)
        self.update_data.start()
 
     @tasks.loop(seconds = 10)
     async def update_data(self):
-       channel = self.get_channel(1100461581072085012)
+       channel = self.get_channel(self.channel)
        response = requests.get("http://gubendo.pythonanywhere.com/get_height/")
        data = response.json()
        df = pd.read_csv("data.csv")
@@ -47,14 +48,14 @@ class BetonBot(discord.Client):
          
           if height < current_height - 50:
              df.to_csv("data.csv", index=False)
-             await channel.send("_ _ \n💀 Chute terrible de " + str(current_height - height) + " mètres pour " + user + " 💀\n _ _")
+             await channel.send("_ _ \n💀 Chute terrible de " + str(current_height - height) + " mètres pour " + user + " (" + str(current_height) + "m -> " + str(height) + "m) 💀\n _ _")
              await self.display_performance(1)
       
       
           df.to_csv("data.csv", index=False)
 
     async def display_performance(self, performance):
-       channel = self.get_channel(1100461581072085012)
+       channel = self.get_channel(self.channel)
        response = requests.get("http://gubendo.pythonanywhere.com/get_height/")
        data = response.json()
        info = "\n"
@@ -86,6 +87,9 @@ class BetonBot(discord.Client):
 
           counter +=1 
           last_height = player[performance]
+       splits = int(last_height / 20)
+       info += "-\n"*splits
+       info += "\n🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨\n"
        await channel.send(info)
 
 
@@ -100,11 +104,20 @@ class BetonBot(discord.Client):
           await self.display_performance(2)
        else:
           return
-       
 
 
 
-bb = BetonBot()
+parser = argparse.ArgumentParser()
+parser.add_argument('--dev', action='store_true')
+
+args = parser.parse_args()
+
+if args.dev:
+   channel = 1100334635382227004
+else:
+   channel = 1100461581072085012
+
+bb = BetonBot(channel)
 bb.run("MTEwMDMzMjkyMTY4NjA3NzQ1MA.Gjl5oy.TmhI1vlC4QbPysH-BGC_SFSNPjwNNE8ZKmf1q4")
 
 

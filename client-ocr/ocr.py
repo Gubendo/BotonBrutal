@@ -8,15 +8,31 @@ import pytesseract
 import numpy as np
 import cv2
 
+def median(dataset):
+    data = sorted(dataset)
+    index = len(data) // 2
+    
+    # If the dataset is odd  
+    if len(dataset) % 2 != 0:
+        return data[index]
+    
+    # If the dataset is even
+    return (data[index - 1] + data[index]) / 2
+
+
 username = "Thomas"
 
 base_url = "http://gubendo.pythonanywhere.com/upload_height/"
 
+
 print('LANCEZ BETON BRUTAL VITE VITE VITE')
 time.sleep(20)
 
+num_hits = 0
+hits = []
+
 while True:
-    time.sleep(10)
+    time.sleep(2)
     
     screen = pyautogui.screenshot()
     img = np.array(screen)
@@ -37,8 +53,16 @@ while True:
     except:
         continue
     else:  
-        data = {"user": username, "height": height_int}
+        num_hits += 1
+        hits.append(height_int)
+
+    if num_hits == 3:
+        median_height = median(hits)
+        data = {"user": username, "height": int(median_height)}
         print(data)
         response = requests.post(base_url, json=data)
         print(response)
+        
+        num_hits = 0
+        hits = []
     
