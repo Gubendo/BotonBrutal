@@ -3,22 +3,9 @@ from functools import partial
 import time
 import pyautogui
 import requests
-import pygetwindow as gw
 import pytesseract
 import numpy as np
 import cv2
-
-def median(dataset):
-    data = sorted(dataset)
-    index = len(data) // 2
-    
-    # If the dataset is odd  
-    if len(dataset) % 2 != 0:
-        return data[index]
-    
-    # If the dataset is even
-    return (data[index - 1] + data[index]) / 2
-
 
 username = "Thomas"
 
@@ -28,11 +15,10 @@ base_url = "http://gubendo.pythonanywhere.com/upload_height/"
 print('LANCEZ BETON BRUTAL VITE VITE VITE')
 time.sleep(20)
 
-num_hits = 0
-hits = []
+base_conf = 0
 
 while True:
-    time.sleep(2)
+    time.sleep(5)
     
     screen = pyautogui.screenshot()
     img = np.array(screen)
@@ -41,28 +27,35 @@ while True:
 
     img_crop = img[0:int(h/8), 0:int(w/8)]
     img_crop = cv2.cvtColor(img_crop, cv2.COLOR_BGR2GRAY)
+    img_inv = cv2.bitwise_not(img_crop)
+
     _, img_bin = cv2.threshold(img_crop, 120, 255, cv2.THRESH_BINARY)
+    _, img_bin_inv = cv2.threshold(img_inv, 120, 255, cv2.THRESH_BINARY)
 
-    text = pytesseract.image_to_string(img_bin)
+    text = pytesseract.image_to_data(img_bin, output_type="data.frame")
+    text = text[text.conf != -1]
 
-    height = text.split('M')[0]
-    print(height)
+    text_inv = pytesseract.image_to_data(img_bin_inv, output_type="data.frame")
+    text_inv = text_inv[text_inv.conf != -1]
+
+    if text.shape[0] == 1:
+        row = text.iloc[0]
+        if row["conf"] > 90:
+            height = row["text"].split('M')[0]
+            base_conf = row["conf"]
     
+    if text_inv.shape[0] == 1:
+        row = text_inv.iloc[0]
+        if row["conf"] > 90 and row["conf"] > base_conf:
+            height = row["text"].split('M')[0]
+
     try:
         height_int = int(height)
     except:
         continue
     else:  
-        num_hits += 1
-        hits.append(height_int)
-
-    if num_hits == 3:
-        median_height = median(hits)
-        data = {"user": username, "height": int(median_height)}
+        data = {"user": username, "height": height_int}
         print(data)
         response = requests.post(base_url, json=data)
         print(response)
-        
-        num_hits = 0
-        hits = []
     
