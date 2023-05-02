@@ -109,6 +109,7 @@ class BetonBot(discord.Client):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dev', action='store_true')
+parser.add_argument('--token', default="")
 
 args = parser.parse_args()
 
@@ -118,7 +119,7 @@ else:
    channel = 1100461581072085012
 
 bb = BetonBot(channel)
-bb.run("MTEwMDMzMjkyMTY4NjA3NzQ1MA.Gjl5oy.TmhI1vlC4QbPysH-BGC_SFSNPjwNNE8ZKmf1q4")
+bb.run(args.token)
 
 
 
