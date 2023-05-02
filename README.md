@@ -2,7 +2,7 @@
 
 **[Changelog](CHANGELOG.md)**     
 
-Ce projet est séparé en 4 parties :  
+Ce projet est séparé en 4 parties : un OCR, une API Flask, un bot Discord et un graphe Matplotlib 
 
 ## OCR
 Un script python lancé côté client qui vient capturer la fenêtre Beton Brutal à intervalle régulier, crop la zone affichant la hauteur, passer un OCR sur la hauteur affichée et enregistrer la hauteur actuelle en l'envoyant à l'API  
