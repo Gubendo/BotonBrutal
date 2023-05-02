@@ -42,10 +42,7 @@ class BetonBot(discord.Client):
                    user_index = index
 
           df.loc[user_index, "current_height"] = height
-          print(max_height)
-          print(new_max)
           if new_max > max_height + 10:
-             print("Hello")
              df.loc[user_index, "max_height"] = new_max
              df.to_csv("data.csv", index=False)
              await channel.send("_ _ \n🧗 Nouveau record pour " + user + " : " + str(new_max) + " mètres 🧗\n_ _")
