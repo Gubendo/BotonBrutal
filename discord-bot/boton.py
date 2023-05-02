@@ -80,7 +80,7 @@ class BetonBot(discord.Client):
              elif counter == 2:
                name = "🥉 " + player[0]
              else:
-               name = player[0]
+               name = "💩 " + player[0]
           
           if performance == 1:
             info += name + " : " + str(player[1]) + "m (Max : " + str(player[2]) + "m)\n"
