@@ -20,6 +20,8 @@ class BetonBot(discord.Client):
     async def on_ready(self):
        print("BOT READY")
        self.update_data.start()
+       await self.user.edit(username="Breton Brutal")
+       await self.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='du haut de ses 457m'))
 
     @tasks.loop(seconds = 10)
     async def update_data(self):
