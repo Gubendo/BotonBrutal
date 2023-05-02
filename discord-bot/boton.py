@@ -113,7 +113,7 @@ class BetonBot(discord.Client):
           print(data)
           response = requests.post(base_url, json=data)
           await channel.send("Hauteur max réinitialisée pour " + user + " : " + str(new_max) + " mètres")
-          return 
+          await self.display_performance(1)
 
 
        
