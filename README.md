@@ -1,5 +1,7 @@
 ### BOTON BRUTAL
 
+**[Changelog](CHANGELOG.md)**     
+
 Ce projet est séparé en 3 parties :  
 
 - Un script python lancé côté client qui vient capturer la fenêtre Beton Brutal à intervalle régulier, crop la zone affichant la hauteur, passer un OCR sur la hauteur affichée et enregistrer la hauteur actuelle   

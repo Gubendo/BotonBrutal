@@ -46,6 +46,20 @@ def get_height():
     df_list = df.values.tolist()
     return jsonify(df_list)
 
+@app.route('/set_max/', methods=['POST'])
+def set_max():
+
+    data = request.data
+    data_j = json.loads(data)
+    user = data_j["user"]
+    new_max = data_j["max"]
+
+    df = pd.read_csv("data.csv")
+
+    df.loc[df.player == user, "max_height"] = new_max
+    df.to_csv("data.csv", index=False)
+
+    return "Nouveau max pour " + user + " : " + str(new_max) + " mètres"
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)

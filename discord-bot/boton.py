@@ -94,6 +94,22 @@ class BetonBot(discord.Client):
        info += "\n🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨🪨\n"
        await channel.send(info)
 
+    async def update_max(self, data):
+       channel = self.get_channel(self.channel)
+       base_url = "http://gubendo.pythonanywhere.com/set_max/"
+
+       try:
+        height_int = int(data[2])
+       except:
+          await channel.send("Votre 2ème argument n'est pas un entier valide (!max 1 2)")
+          return 
+       else:  
+          data = {"user": data[1], "height": height_int}
+          print(data)
+          response = requests.post(base_url, json=data)
+          await channel.send("Hauteur max réinitialisée pour " + data[1] + " : " + str(height_int) + " mètres")
+          return 
+
 
        
     async def on_message(self, message):
@@ -104,6 +120,9 @@ class BetonBot(discord.Client):
           await self.display_performance(1) #1 pour hauteur actuelle, #2 pour hauteur max
        elif "!maxeur" in message.content:
           await self.display_performance(2)
+       elif "!max" in message.content:
+          data = message.content.split(" ")
+          await self.update_max(data)
        else:
           return
 
