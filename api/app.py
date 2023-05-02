@@ -52,7 +52,7 @@ def set_max():
     data = request.data
     data_j = json.loads(data)
     user = data_j["user"]
-    new_max = data_j["max"]
+    new_max = data_j["new_max"]
 
     df = pd.read_csv("data.csv")
 

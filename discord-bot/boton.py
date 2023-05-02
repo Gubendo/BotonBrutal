@@ -45,12 +45,12 @@ class BetonBot(discord.Client):
           if new_max > max_height + 10:
              df.loc[user_index, "max_height"] = new_max
              df.to_csv("data.csv", index=False)
-             await channel.send("_ _ \n🚨 Nouveau record pour " + user + " 🚨 : " + str(new_max) + " mètres\n _ _")
+             await channel.send("_ _ \n🧗 Nouveau record pour " + user + " : " + str(new_max) + " mètres 🧗\n_ _")
              await self.display_performance(1)
          
           if height < current_height - 50:
              df.to_csv("data.csv", index=False)
-             await channel.send("_ _ \n💀 Chute terrible de " + str(current_height - height) + " mètres pour " + user + " (" + str(current_height) + "m -> " + str(height) + "m) 💀\n _ _")
+             await channel.send("_ _ \n🤡 Chute terrible de " + str(current_height - height) + " mètres pour " + user + " (" + str(current_height) + "m -> " + str(height) + "m) 🤡\n _ _")
              await self.display_performance(1)
       
       
@@ -109,10 +109,10 @@ class BetonBot(discord.Client):
           df.loc[df.player == user, "max_height"] = new_max
           df.to_csv("data.csv", index=False)
 
-          data = {"user": user, "height": new_max}
-          print(data)
+          data = {"user": user, "new_max": new_max}
           response = requests.post(base_url, json=data)
-          await channel.send("Hauteur max réinitialisée pour " + user + " : " + str(new_max) + " mètres")
+
+          await channel.send("_ _ \n🔧 Hauteur max réinitialisée pour " + user + " : " + str(new_max) + " mètres 🔧\n _ _")
           await self.display_performance(1)
 
 
