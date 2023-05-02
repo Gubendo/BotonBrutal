@@ -40,13 +40,13 @@ while True:
 
     if text.shape[0] == 1:
         row = text.iloc[0]
-        height = row["text"].split('M')[0]
+        height = str(row["text"]).split('M')[0]
         conf = row["conf"]
     
     if text_inv.shape[0] == 1:
         row = text_inv.iloc[0]
         if row["conf"] > base_conf:
-            height = row["text"].split('M')[0]
+            height = str(row["text"]).split('M')[0]
             conf = row["conf"]
 
     if conf < 90:
