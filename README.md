@@ -1,4 +1,4 @@
-### BOTON BRUTAL
+# BOTON BRUTAL
 
 **[Changelog](CHANGELOG.md)**     
 
