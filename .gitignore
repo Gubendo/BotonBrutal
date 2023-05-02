@@ -10,5 +10,8 @@
 
 # Built Visual Studio Code Extensions
 *.vsix
+*.csv
+discord-bot/data.csv
+api/data.csv
 
 __pycache__/*
