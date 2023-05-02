@@ -13,12 +13,12 @@ base_url = "http://gubendo.pythonanywhere.com/upload_height/"
 
 
 print('LANCEZ BETON BRUTAL VITE VITE VITE')
-time.sleep(20)
+time.sleep(10)
 
 base_conf = 0
 
 while True:
-    time.sleep(5)
+    time.sleep(2)
     
     screen = pyautogui.screenshot()
     img = np.array(screen)
@@ -40,14 +40,18 @@ while True:
 
     if text.shape[0] == 1:
         row = text.iloc[0]
-        if row["conf"] > 90:
-            height = row["text"].split('M')[0]
-            base_conf = row["conf"]
+        height = row["text"].split('M')[0]
+        conf = row["conf"]
     
     if text_inv.shape[0] == 1:
         row = text_inv.iloc[0]
-        if row["conf"] > 90 and row["conf"] > base_conf:
+        if row["conf"] > base_conf:
             height = row["text"].split('M')[0]
+            conf = row["conf"]
+
+    if conf < 90:
+        print("Score de confiance trop faible (" + str(height) + "m, score " + str(conf))
+        continue
 
     try:
         height_int = int(height)
